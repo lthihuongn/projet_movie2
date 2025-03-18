@@ -30,18 +30,27 @@ async function fetchDetails() {
 
 function displayDetails(details, cast) {
     const focusContainer = document.querySelector('.focus-container');
+
+    // Création du contenu HTML
     focusContainer.innerHTML = `
         <div class="banner">
             <div class="content">
-                <img src="${details.poster_path ? IMG_BASE_URL + details.poster_path : PLACEHOLDER_IMG}" alt="${details.title || details.name}">
+                <img src="${details.poster_path ? IMG_BASE_URL + details.poster_path : PLACEHOLDER_IMG}" 
+                     alt="${details.title || details.name}">
                 <div class="right">
                     <div class="top">
                         <div class="score">${Math.round(details.vote_average * 10)}%</div>
                         <div class="title-date">
-                            <h1>${details.title || details.name} (${new Date(details.release_date || details.first_air_date).getFullYear()})</h1>
-                            <span>${new Date(details.release_date || details.first_air_date).toLocaleDateString('fr-FR', {
-        day: '2-digit', month: 'long', year: 'numeric'
-    })}</span>
+                            <h1>${details.title || details.name} 
+                                (${new Date(details.release_date || details.first_air_date).getFullYear()})
+                            </h1>
+                            <span>${new Date(details.release_date || details.first_air_date)
+        .toLocaleDateString('fr-FR', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+        })}
+                            </span>
                         </div>
                     </div>
                     <div class="synopsis">
@@ -57,7 +66,8 @@ function displayDetails(details, cast) {
             <div class="actors">
                 ${cast.slice(0, 8).map(actor => `
                     <div class="actor">
-                        <img src="${actor.profile_path ? IMG_BASE_URL + actor.profile_path : PLACEHOLDER_IMG}" alt="${actor.name}">
+                        <img src="${actor.profile_path ? IMG_BASE_URL + actor.profile_path : PLACEHOLDER_IMG}" 
+                             alt="${actor.name}">
                         <h4>${actor.name}</h4>
                         <span>${actor.character}</span>
                     </div>
@@ -65,6 +75,19 @@ function displayDetails(details, cast) {
             </div>
         </div>
     `;
+
+    // Gestion du fond dynamique après l'ajout de la bannière
+    const banner = document.querySelector('.focus-container .banner');
+
+    if (details.backdrop_path) {
+        banner.style.backgroundImage = `url(${IMG_BASE_URL + details.backdrop_path})`;
+    } else {
+        banner.style.backgroundImage = `url("./../img/bg.png")`; // Image par défaut
+    }
+
+    // S'assurer que le background est bien positionné
+    banner.style.backgroundSize = 'cover';
+    banner.style.backgroundPosition = 'center';
 }
 
 document.addEventListener('DOMContentLoaded', fetchDetails);

@@ -20,48 +20,6 @@
   align-items: center;
 }
 
-.title-filter {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  h2 {
-    margin-right: 20px;
-    font-size: 36px;
-    font-weight: 500;
-  }
-  button {
-    width: 150px;
-    min-width: 150px;
-    height: 30px;
-    cursor: pointer;
-    margin-right: 20px;
-    font-size: 18px;
-  }
-  >button {
-    -webkit-transition: all 0.3s;
-    transition: all 0.3s;
-    color: $color_4;
-    background-color: $background-color_2;
-    border: solid 2px #032541;
-    &:hover {
-      -webkit-transition: all 0.3s;
-      transition: all 0.3s;
-      color: $color_1;
-      background-color: $background-color_1;
-      border: solid 2px #032541;
-    }
-  }
-  .active {
-    color: $color_1;
-    background-color: $background-color_1;
-    border: solid 2px #032541;
-  }
-}
 .grid-tendances {
   margin-top: 30px;
   display: -webkit-box;

@@ -50,3 +50,14 @@
     font-weight: 600;
   }
 }
+
+.wrapper-search {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding-top: 30px;
+  margin-bottom: 30px;
+}
