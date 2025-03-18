@@ -1,0 +1,22 @@
+{
+  "name": "package",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "sass": "sass --watch ./sass/main.scss:./css/style.css --style compressed"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lthihuongn/projet_movie2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lthihuongn/projet_movie2/issues"
+  },
+  "homepage": "https://github.com/lthihuongn/projet_movie2#readme",
+  "description": "",
+  "dependencies": {
+    "sass": "^1.85.1"
+  }
+}
