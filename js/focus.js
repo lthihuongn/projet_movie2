@@ -3,10 +3,9 @@ const BASE_URL = 'https://api.themoviedb.org/3';
 const IMG_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 const PLACEHOLDER_IMG = 'https://via.placeholder.com/500x750?text=Image+indisponible';
 
-// Récupération des paramètres de l'URL
 const params = new URLSearchParams(window.location.search);
-const type = params.get('type');  // "movie" ou "tv"
-const id = params.get('id');      // ID du contenu
+const type = params.get('type');
+const id = params.get('id');
 
 async function fetchDetails() {
     if (!type || !id) {
@@ -56,7 +55,7 @@ function displayDetails(details, cast) {
         <div class="casting">
             <h2>Casting</h2>
             <div class="actors">
-                ${cast.slice(0, 4).map(actor => `
+                ${cast.slice(0, 8).map(actor => `
                     <div class="actor">
                         <img src="${actor.profile_path ? IMG_BASE_URL + actor.profile_path : PLACEHOLDER_IMG}" alt="${actor.name}">
                         <h4>${actor.name}</h4>
