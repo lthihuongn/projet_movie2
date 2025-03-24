@@ -1,4 +1,4 @@
-import { displayMixedContent } from './display.js';
+import {displayMixedContent, displaySearch} from './display.js';
 
 const API_KEY = 'c9969067a3218ce43c4915860fb5a681';
 const BASE_URL = 'https://api.themoviedb.org/3';
@@ -9,14 +9,34 @@ const PLACEHOLDER_IMG = 'https://via.placeholder.com/500x750?text=Image+indispon
 const searchInput = document.querySelector('.search-container input');
 const searchButton = document.querySelector('.search-container button');
 
-// Fonction pour afficher dynamiquement la section .wrapper.search
+// Fonction pour créer et afficher la section de recherche (uniquement si elle n'existe pas déjà)
 export function createSearchWrapper() {
-    let searchWrapper = document.querySelector('.wrapper-search');
+    let searchWrapper = document.querySelector('.wrapper.search');
 
     if (!searchWrapper) {
         searchWrapper = document.createElement('div');
         searchWrapper.classList.add('wrapper', 'search');
-        document.body.insertBefore(searchWrapper, document.querySelector('footer'));
+        searchWrapper.innerHTML = `
+            <button class="close-search">Quitter</button>
+            <div class="search-results-container" id="search-results">
+                <h2>Résultats de la recherche</h2>
+            </div>
+        `;
+
+        // On l'ajoute juste avant la section des tendances (donc à la place de wrapper)
+        const wrapper = document.querySelector('.wrapper');
+        if (wrapper) {
+            document.body.insertBefore(searchWrapper, wrapper);  // Insère la div au-dessus de .wrapper
+        } else {
+            // Si .wrapper n'existe pas, l'ajoute à la fin du body
+            document.body.appendChild(searchWrapper);
+        }
+
+        // Ajouter un écouteur d'événements au bouton "Quitter" pour fermer la recherche
+        const closeSearchButton = searchWrapper.querySelector('.close-search');
+        closeSearchButton.addEventListener('click', () => {
+            searchWrapper.style.display = 'none';  // Cache la section de recherche quand on clique sur "Quitter"
+        });
     }
 
     return searchWrapper;
@@ -35,14 +55,21 @@ export async function searchMixedContent(query) {
 
         const results = [...(moviesData.results || []), ...(seriesData.results || [])];
 
-        const searchWrapper = createSearchWrapper();
+        const searchWrapper = createSearchWrapper();  // Appel pour créer ou récupérer la section de recherche
+        const resultsContainer = searchWrapper.querySelector('.search-results-container');  // Conteneur des résultats
+
+        // On vide la div avant de la remplir avec les nouveaux résultats
+        resultsContainer.innerHTML = '';  // Vide la div avant d'afficher de nouveaux résultats
 
         if (results.length > 0) {
-            searchWrapper.innerHTML = ''; // Nettoyage avant d'afficher de nouveaux résultats
-            displayMixedContent(results, searchWrapper);  // Affiche les résultats trouvés
+            // Afficher les résultats directement dans la div de recherche
+            displaySearch(results);  // On affiche les résultats dans la div .search-results-container
         } else {
-            searchWrapper.innerHTML = `<p>Aucun résultat trouvé pour "${query}".</p>`;
+            resultsContainer.innerHTML = `<p>Aucun résultat trouvé pour "${query}".</p>`;
         }
+
+        // Affiche la section de recherche si elle est cachée
+        searchWrapper.style.display = 'block';
     } catch (error) {
         console.error("Erreur lors de la recherche :", error);
     }
@@ -54,7 +81,7 @@ searchButton.addEventListener('click', (e) => {
     const query = searchInput.value.trim();
 
     if (query) {
-        searchMixedContent(query); // Lance la recherche uniquement si le champ n'est pas vide
+        searchMixedContent(query);  // Lance la recherche uniquement si le champ n'est pas vide
     }
 });
 

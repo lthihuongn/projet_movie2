@@ -90,3 +90,39 @@ export function displayMovies(movies) {
 
     gridTendances.append(...movieElements);
 }
+
+export function displaySearch(content) {
+    const gridTendances = document.querySelector('#search-results');
+    gridTendances.innerHTML = '';
+
+    const limitedContent = content.slice(0, 4);
+
+    const contentElements = limitedContent.map(item => {
+        const score = Math.round(item.vote_average * 10);
+        const title = item.title || item.name;
+        const releaseDate = item.release_date || item.first_air_date || 'Date inconnue';
+        const mediaType = item.media_type === 'movie' ? 'movie' : 'tv';
+
+        const contentElement = document.createElement('div');
+        contentElement.classList.add('movie');
+
+        contentElement.innerHTML = `
+            <a href="focus.html?type=${mediaType}&id=${item.id}">
+                
+                <img src="${item.poster_path ? IMG_BASE_URL + item.poster_path : PLACEHOLDER_IMG}" 
+                     alt="${title}">
+                <div class="score">
+                    <p>${score}%</p>
+                </div>
+                <h4>${title}</h4>
+                <span>${new Date(releaseDate).toLocaleDateString('fr-FR', {
+            day: '2-digit', month: 'long', year: 'numeric'
+        })}</span>
+            </a>
+        `;
+        return contentElement;
+    });
+
+    gridTendances.append(...contentElements);
+}
+
