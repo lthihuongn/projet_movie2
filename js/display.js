@@ -43,7 +43,7 @@ export function displaySeries(series) {
     const limitedContent = series.slice(0, 4);
 
     const seriesElements = limitedContent.map(serie => {
-        const score = Math.round(serie.vote_average * 10); // Conversion en pourcentage
+        const score = Math.round(serie.vote_average * 10);
         const serieElement = document.createElement('div');
         serieElement.classList.add('serie');
         serieElement.innerHTML = `
@@ -71,7 +71,7 @@ export function displayMovies(movies) {
     const limitedContent = movies.slice(0, 4);
 
     const movieElements = limitedContent.map(movie => {
-        const score = Math.round(movie.vote_average * 10);  // Conversion en pourcentage
+        const score = Math.round(movie.vote_average * 10);
         const movieElement = document.createElement('div');
         movieElement.classList.add('movie2');
         movieElement.innerHTML = `
