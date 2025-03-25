@@ -40,7 +40,9 @@ export function displaySeries(series) {
     const gridTendances = document.querySelector('#populaires');
     gridTendances.innerHTML = '';
 
-    const seriesElements = series.map(serie => {
+    const limitedContent = series.slice(0, 4);
+
+    const seriesElements = limitedContent.map(serie => {
         const score = Math.round(serie.vote_average * 10); // Conversion en pourcentage
         const serieElement = document.createElement('div');
         serieElement.classList.add('serie');
@@ -64,23 +66,23 @@ export function displaySeries(series) {
 }
 
 export function displayMovies(movies) {
-    const gridTendances = document.querySelector('#tendances');
+    const gridTendances = document.querySelector('#populaire2');
     gridTendances.innerHTML = '';
+    const limitedContent = movies.slice(0, 4);
 
-    const movieElements = movies.map(movie => {
-        const score = Math.round(movie.vote_average * 10);
+    const movieElements = limitedContent.map(movie => {
+        const score = Math.round(movie.vote_average * 10);  // Conversion en pourcentage
         const movieElement = document.createElement('div');
-        movieElement.classList.add('movie');
+        movieElement.classList.add('movie2');
         movieElement.innerHTML = `
-            <a href="focus.html?type=${movie.media_type}&id=${movie.id}">
-                
+            <a href="focus.html?type=movie&id=${movie.id}">
                 <img src="${movie.poster_path ? IMG_BASE_URL + movie.poster_path : PLACEHOLDER_IMG}" 
-                     alt="${movie.title || movie.name}">
+                     alt="${movie.title}">
                 <div class="score">
                     <p>${score}%</p>
                 </div>
-                <h4>${movie.title || movie.name}</h4>
-                <span>${new Date(movie.release_date || movie.first_air_date).toLocaleDateString('fr-FR', {
+                <h4>${movie.title}</h4>
+                <span>${new Date(movie.release_date).toLocaleDateString('fr-FR', {
             day: '2-digit', month: 'long', year: 'numeric'
         })}</span>
             </a>
@@ -90,3 +92,39 @@ export function displayMovies(movies) {
 
     gridTendances.append(...movieElements);
 }
+
+export function displaySearch(content) {
+    const gridTendances = document.querySelector('#search-results');
+    gridTendances.innerHTML = '';
+
+    const limitedContent = content.slice(0, 8);
+
+    const contentElements = limitedContent.map(item => {
+        const score = Math.round(item.vote_average * 10);
+        const title = item.title || item.name;
+        const releaseDate = item.release_date || item.first_air_date || 'Date inconnue';
+        const mediaType = item.media_type === 'movie' ? 'movie' : 'tv';
+
+        const contentElement = document.createElement('div');
+        contentElement.classList.add('movie');
+
+        contentElement.innerHTML = `
+            <a href="focus.html?type=${mediaType}&id=${item.id}">
+                
+                <img src="${item.poster_path ? IMG_BASE_URL + item.poster_path : PLACEHOLDER_IMG}" 
+                     alt="${title}">
+                <div class="score">
+                    <p>${score}%</p>
+                </div>
+                <h4>${title}</h4>
+                <span>${new Date(releaseDate).toLocaleDateString('fr-FR', {
+            day: '2-digit', month: 'long', year: 'numeric'
+        })}</span>
+            </a>
+        `;
+        return contentElement;
+    });
+
+    gridTendances.append(...contentElements);
+}
+

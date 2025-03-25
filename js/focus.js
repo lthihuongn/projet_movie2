@@ -9,7 +9,7 @@ const id = params.get('id');
 
 async function fetchDetails() {
     if (!type || !id) {
-        console.error("Type ou ID manquant dans l'URL.");
+        displayError("Type ou ID manquant dans l'URL.");
         return;
     }
 
@@ -18,30 +18,45 @@ async function fetchDetails() {
 
     try {
         const [detailsResponse, creditsResponse] = await Promise.all([
-            fetch(url).then(res => res.json()),
-            fetch(creditsUrl).then(res => res.json())
+            fetch(url).then(res => {
+                if (!res.ok) throw new Error(`Erreur ${res.status} : Contenu non trouvé`);
+                return res.json();
+            }),
+            fetch(creditsUrl).then(res => {
+                if (!res.ok) throw new Error(`Erreur ${res.status} : Casting non trouvé`);
+                return res.json();
+            })
         ]);
 
         displayDetails(detailsResponse, creditsResponse.cast);
     } catch (error) {
         console.error("Erreur lors de la récupération des détails :", error);
+        displayError("Erreur 404 : Contenu non trouvé.");
     }
 }
 
 function displayDetails(details, cast) {
     const focusContainer = document.querySelector('.focus-container');
+
     focusContainer.innerHTML = `
         <div class="banner">
             <div class="content">
-                <img src="${details.poster_path ? IMG_BASE_URL + details.poster_path : PLACEHOLDER_IMG}" alt="${details.title || details.name}">
+                <img src="${details.poster_path ? IMG_BASE_URL + details.poster_path : PLACEHOLDER_IMG}" 
+                     alt="${details.title || details.name}">
                 <div class="right">
                     <div class="top">
                         <div class="score">${Math.round(details.vote_average * 10)}%</div>
                         <div class="title-date">
-                            <h1>${details.title || details.name} (${new Date(details.release_date || details.first_air_date).getFullYear()})</h1>
-                            <span>${new Date(details.release_date || details.first_air_date).toLocaleDateString('fr-FR', {
-        day: '2-digit', month: 'long', year: 'numeric'
-    })}</span>
+                            <h1>${details.title || details.name} 
+                                (${new Date(details.release_date || details.first_air_date).getFullYear()})
+                            </h1>
+                            <span>${new Date(details.release_date || details.first_air_date)
+        .toLocaleDateString('fr-FR', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+        })}
+                            </span>
                         </div>
                     </div>
                     <div class="synopsis">
@@ -57,12 +72,36 @@ function displayDetails(details, cast) {
             <div class="actors">
                 ${cast.slice(0, 8).map(actor => `
                     <div class="actor">
-                        <img src="${actor.profile_path ? IMG_BASE_URL + actor.profile_path : PLACEHOLDER_IMG}" alt="${actor.name}">
+                        <img src="${actor.profile_path ? IMG_BASE_URL + actor.profile_path : PLACEHOLDER_IMG}" 
+                             alt="${actor.name}">
                         <h4>${actor.name}</h4>
                         <span>${actor.character}</span>
                     </div>
                 `).join('')}
             </div>
+        </div>
+    `;
+
+    const banner = document.querySelector('.focus-container .banner');
+
+    if (details.backdrop_path) {
+        banner.style.backgroundImage = `url(${IMG_BASE_URL + details.backdrop_path})`;
+    } else {
+        banner.style.backgroundImage = `url("./../img/bg.png")`;
+    }
+
+    banner.style.backgroundSize = 'cover';
+    banner.style.backgroundPosition = 'center';
+}
+
+
+function displayError(message) {
+    const focusContainer = document.querySelector('.focus-container');
+    focusContainer.innerHTML = `
+        <div class="error-message">
+            <h1>${message}</h1>
+            <p>Veuillez vérifier l'URL ou revenir à la page d'accueil.</p>
+            <a href="./index.html" class="btn-home">Retour à l'accueil</a>
         </div>
     `;
 }
