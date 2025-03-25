@@ -17,10 +17,12 @@ export function createSearchWrapper() {
         searchWrapper = document.createElement('div');
         searchWrapper.classList.add('wrapper', 'search');
         searchWrapper.innerHTML = `
+            <h2>Résultats de la recherche</h2>
             <button class="close-search">Quitter</button>
             <div class="search-results-container" id="search-results">
-                <h2>Résultats de la recherche</h2>
+                
             </div>
+            
         `;
 
         // On l'ajoute juste avant la section des tendances (donc à la place de wrapper)

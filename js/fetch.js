@@ -24,3 +24,15 @@ export async function fetchTrendingSeries() {
         console.error("Erreur lors de la récupération des séries :", error);
     }
 }
+
+export async function fetchTrendingMovies() {
+    try {
+        const response = await fetch(`${BASE_URL}/trending/movie/week?api_key=${API_KEY}&language=fr-FR`);
+        const data = await response.json();
+
+        if (data.results) displayMovies(data.results);
+    } catch (error) {
+        console.error("Erreur lors de la récupération des films :", error);
+    }
+}
+

@@ -30,6 +30,12 @@ export function setupButtons() {
                 case "populaires":
                     fetchPopularSeries();
                     break;
+                case "mieux notées !":
+                    fetchTopRatedMovies();
+                    break;
+                case "populaires !":
+                    fetchPopularMovies();
+                    break;
                 default:
                     console.warn(`Bouton non reconnu : ${buttonText}`);
             }

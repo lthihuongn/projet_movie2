@@ -50,3 +50,18 @@
 .populaires-container {
   margin-top: 40px;
 }
+
+.wrapper-movies {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding-top: 30px;
+  margin-bottom: 30px;
+}
+
+.movies-container {
+  margin-top: 40px;
+}
