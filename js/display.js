@@ -71,18 +71,18 @@ export function displayMovies(movies) {
     const limitedContent = movies.slice(0, 4);
 
     const movieElements = limitedContent.map(movie => {
-        const score = Math.round(movie.vote_average * 10);
+        const score = Math.round(movie.vote_average * 10);  // Conversion en pourcentage
         const movieElement = document.createElement('div');
         movieElement.classList.add('movie2');
         movieElement.innerHTML = `
-            <a href="focus.html?type=tv&id=${movies.id}">
+            <a href="focus.html?type=movie&id=${movie.id}">
                 <img src="${movie.poster_path ? IMG_BASE_URL + movie.poster_path : PLACEHOLDER_IMG}" 
-                     alt="${movie.name}">
+                     alt="${movie.title}">
                 <div class="score">
                     <p>${score}%</p>
                 </div>
-                <h4>${movie.name}</h4>
-                <span>${new Date(movie.first_air_date).toLocaleDateString('fr-FR', {
+                <h4>${movie.title}</h4>
+                <span>${new Date(movie.release_date).toLocaleDateString('fr-FR', {
             day: '2-digit', month: 'long', year: 'numeric'
         })}</span>
             </a>

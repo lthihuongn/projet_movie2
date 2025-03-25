@@ -72,19 +72,35 @@
   margin-bottom: 30px;
 }
 
-.wrapper.search {
-  color: #fff;               /* Texte en blanc pour un meilleur contraste */
-  padding: 20px;             /* Espacement intérieur pour plus d'aération */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Ombre pour du relief */
-  margin-bottom: 20px;       /* Espace sous la div */
-  background-color: $background-color_3; /* Fond gris clair */
-
+#search-results {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-top: 30px;
+  margin-bottom: 30px;
+  margin-top: 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  padding-top: 30px;
+  margin-bottom: 30px;
 }
 
-.wrapper.search h2 {
-  margin-right: 20px;
-  font-size: 36px;
-  font-weight: 500;
-  color: $color_4;
-
+.wrapper.search {
+  color: $color_2;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  margin-bottom: 20px;
+  background-color: $background-color_3;
+  h2 {
+    margin-right: 20px;
+    font-size: 36px;
+    font-weight: 500;
+    color: $color_2;
+  }
 }

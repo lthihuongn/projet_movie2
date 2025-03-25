@@ -6,7 +6,13 @@ import {
 import {
     fetchTopRatedSeries,
     fetchPopularSeries
-} from "./fetch_filter_seriesTV.js";
+} from "./fetch_filter_seriesTV.js"
+
+import {
+    fetchTopRatedMovies,
+    fetchPopularMovies
+} from "./fetch_filter_movies.js"
+
 
 export function setupButtons() {
     const buttons = document.querySelectorAll('button');

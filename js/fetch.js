@@ -1,4 +1,4 @@
-import { displayMixedContent, displaySeries } from "./display.js";
+import { displayMixedContent, displaySeries, displayMovies } from "./display.js";
 
 const API_KEY = 'c9969067a3218ce43c4915860fb5a681';
 const BASE_URL = 'https://api.themoviedb.org/3';

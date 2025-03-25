@@ -9,7 +9,7 @@ const id = params.get('id');
 
 async function fetchDetails() {
     if (!type || !id) {
-        console.error("Type ou ID manquant dans l'URL.");
+        displayError("Type ou ID manquant dans l'URL.");
         return;
     }
 
@@ -18,20 +18,26 @@ async function fetchDetails() {
 
     try {
         const [detailsResponse, creditsResponse] = await Promise.all([
-            fetch(url).then(res => res.json()),
-            fetch(creditsUrl).then(res => res.json())
+            fetch(url).then(res => {
+                if (!res.ok) throw new Error(`Erreur ${res.status} : Contenu non trouvé`);
+                return res.json();
+            }),
+            fetch(creditsUrl).then(res => {
+                if (!res.ok) throw new Error(`Erreur ${res.status} : Casting non trouvé`);
+                return res.json();
+            })
         ]);
 
         displayDetails(detailsResponse, creditsResponse.cast);
     } catch (error) {
         console.error("Erreur lors de la récupération des détails :", error);
+        displayError("Erreur 404 : Contenu non trouvé.");
     }
 }
 
 function displayDetails(details, cast) {
     const focusContainer = document.querySelector('.focus-container');
 
-    // Création du contenu HTML
     focusContainer.innerHTML = `
         <div class="banner">
             <div class="content">
@@ -76,18 +82,28 @@ function displayDetails(details, cast) {
         </div>
     `;
 
-    // Gestion du fond dynamique après l'ajout de la bannière
     const banner = document.querySelector('.focus-container .banner');
 
     if (details.backdrop_path) {
         banner.style.backgroundImage = `url(${IMG_BASE_URL + details.backdrop_path})`;
     } else {
-        banner.style.backgroundImage = `url("./../img/bg.png")`; // Image par défaut
+        banner.style.backgroundImage = `url("./../img/bg.png")`;
     }
 
-    // S'assurer que le background est bien positionné
     banner.style.backgroundSize = 'cover';
     banner.style.backgroundPosition = 'center';
+}
+
+
+function displayError(message) {
+    const focusContainer = document.querySelector('.focus-container');
+    focusContainer.innerHTML = `
+        <div class="error-message">
+            <h1>${message}</h1>
+            <p>Veuillez vérifier l'URL ou revenir à la page d'accueil.</p>
+            <a href="./index.html" class="btn-home">Retour à l'accueil</a>
+        </div>
+    `;
 }
 
 document.addEventListener('DOMContentLoaded', fetchDetails);
