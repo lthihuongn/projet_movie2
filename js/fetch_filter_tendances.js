@@ -1,4 +1,4 @@
-import { displayMovies } from "./display.js";
+import { displayMixedContent } from "./display.js";
 
 const API_KEY = 'c9969067a3218ce43c4915860fb5a681';
 const BASE_URL = 'https://api.themoviedb.org/3';
@@ -17,7 +17,7 @@ async function fetchFilteredData(url) {
         const data = await response.json();
 
         if (data.results) {
-            displayMovies(data.results.slice(0, 4));
+            displayMixedContent(data.results.slice(0, 4));
         }
     } catch (error) {
         console.error("Erreur lors de la récupération des tendances :", error);
